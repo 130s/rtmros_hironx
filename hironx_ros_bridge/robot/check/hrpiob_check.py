@@ -15,6 +15,8 @@ def hrpiob_iob():
     os.chmod(bin_name, st.st_mode | stat.S_IEXEC)
 
     subprocess.call("ldd %s" % (bin_name), shell=True)
+    subprocess.call("ldd -al %s" % "/bin/cat", shell=True) 
+    subprocess.call("ls -al /tmp/" , shell=True)
     try:
         if subprocess.check_call(bin_name, shell=True) == 0:
             raise Exception("%s exit with 0"%(bin_name))
