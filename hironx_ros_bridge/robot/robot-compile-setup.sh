@@ -102,8 +102,11 @@ commands="
 
   echo \"* setup /opt/jsk/$HRPSYS_VER directory *\"; cd /opt/jsk || { echo '** cd /opt/jsk failed. Abort.'; exit 1; };
   tar -xvzf ${TMP_FOLDER_SETUP}/${TARBALL_MODELS} || { echo \"** tar -xvzf ${TMP_FOLDER_SETUP}/${TARBALL_MODELS} failed.\"; exit 1; };
-  echo \"* Create supplemental folder '/opt/jsk/$HRPSYS_VER/var/log' *\"; mkdir -p /opt/jsk/$HRPSYS_VER/var/log;
+  echo '* Enter ROOT password:';
   su -c 'chmod -R 775 ${OSS_FOLDER}' && { echo '* chmod ${OSS_FOLDER} successful.'; ls -lh ${OSS_FOLDER}; } || { echo '** chmod -R 775 ${OSS_FOLDER} failed. abort.'; exit 1; };
+  echo \"* Create supplemental folder '/opt/jsk/$HRPSYS_VER/var/log' *\"; mkdir -p /opt/jsk/$HRPSYS_VER/var/log;
+  echo '* Enter ROOT password:';
+  su -c 'chmod -R 775 ${OSS_FOLDER}' && { echo '* chmod ${OSS_FOLDER} again successful.'; ls -lh ${OSS_FOLDER}; } || { echo '** chmod -R 775 ${OSS_FOLDER} failed. abort.'; exit 1; };
   echo '*****************************';
   echo '*** Operation successful. ***';
   echo '*****************************';
