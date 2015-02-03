@@ -39,22 +39,22 @@ OSS_FOLDER='/opt/jsk'
 
 URL_HIRONX_ZIPBALL=https://github.com/start-jsk/rtmros_hironx/archive/1.0.27.zip
 URL_NXO_ZIPBALL_STABLE=https://github.com/tork-a/rtmros_nextage/archive/0.2.14.zip
-[ -d ${TMP_FOLDER_SETUP} ] && { echo 'In case working folder from previous execution remains, remove and recreate it.'; rm -fr ${TMP_FOLDER_SETUP}; }; mkdir -p ${TMP_FOLDER_SETUP}/opt/jsk/${HRPSYS_VER}
+###[ -d ${TMP_FOLDER_SETUP} ] && { echo 'In case working folder from previous execution remains, remove and recreate it.'; rm -fr ${TMP_FOLDER_SETUP}; }; mkdir -p ${TMP_FOLDER_SETUP}/opt/jsk/${HRPSYS_VER}
 # Download model files.
 ##wget ${URL_HIRONX_ZIPBALL} -O ${TMP_FOLDER_SETUP}/rtmros_hironx.zip || echo "ERROR:: Failed to download hironx zipball."
 ##(cd ${TMP_FOLDER_SETUP}; unzip -o rtmros_hironx.zip)
-wget ${URL_NXO_ZIPBALL_STABLE} -O ${TMP_FOLDER_SETUP}/rtmros_nextage.zip || echo "ERROR:: Failed to download nxo zipball."
-{ cd ${TMP_FOLDER_SETUP}; unzip -o rtmros_nextage.zip; }
+###wget ${URL_NXO_ZIPBALL_STABLE} -O ${TMP_FOLDER_SETUP}/rtmros_nextage.zip || echo "ERROR:: Failed to download nxo zipball."
+###{ cd ${TMP_FOLDER_SETUP}; unzip -o rtmros_nextage.zip; }
 # Download 'base' libraries for QNX that don't be affected by the hrpsys version
-wget 'https://docs.google.com/uc?authuser=0&id=0B5hXrFUpyR2iZS0tQlFyXzhjaGc&export=download' -O ${TMP_FOLDER_SETUP}/${TARBALL_OSS_COMMON} || { echo "ERROR:: Failed to download ${TARBALL_OSS_COMMON}. Abort."; exit 1; }
+###wget 'https://docs.google.com/uc?authuser=0&id=0B5hXrFUpyR2iZS0tQlFyXzhjaGc&export=download' -O ${TMP_FOLDER_SETUP}/${TARBALL_OSS_COMMON} || { echo "ERROR:: Failed to download ${TARBALL_OSS_COMMON}. Abort."; exit 1; }
 # Move files in the tarball above to ${HRPSYS_VER}. TARBALL_OSS_COMMON extracts to ./opt/jsk/* directories.
-tar -C ${TMP_FOLDER_SETUP} -xvzf ${TARBALL_OSS_COMMON}; { mv ./opt/jsk/include ${TMP_FOLDER_SETUP}/opt/jsk/${HRPSYS_VER}; mv ./opt/jsk/lib ${TMP_FOLDER_SETUP}/opt/jsk/${HRPSYS_VER}; } || { echo "ERROR happened while moving ${TARBALL_OSS_COMMON} contents. Abort."; exit 1; }
+###tar -C ${TMP_FOLDER_SETUP} -xvzf ${TARBALL_OSS_COMMON}; { mv ./opt/jsk/include ${TMP_FOLDER_SETUP}/opt/jsk/${HRPSYS_VER}; mv ./opt/jsk/lib ${TMP_FOLDER_SETUP}/opt/jsk/${HRPSYS_VER}; } || { echo "ERROR happened while moving ${TARBALL_OSS_COMMON} contents. Abort."; exit 1; }
 
 # The tarball above (${TARBALL_OSS_COMMON}) contains `include` and `lib` folders, only. So from here we'll create other folders.
-mkdir -p ${TMP_FOLDER_SETUP}/opt/jsk/${HRPSYS_VER}/etc
+###mkdir -p ${TMP_FOLDER_SETUP}/opt/jsk/${HRPSYS_VER}/etc
 ##mv ${TMP_FOLDER_SETUP}/*/hironx_ros_bridge/ ${TMP_FOLDER_SETUP}/opt/jsk/${HRPSYS_VER}/etc/HIRONX
 # zipball retrieved by URL_NXO_ZIPBALL_STABLE yields random folder name. So skip it by asterisk.
-mv ${TMP_FOLDER_SETUP}/*/nextage_description/ ${TMP_FOLDER_SETUP}/opt/jsk/${HRPSYS_VER}/etc/NEXTAGE
+###mv ${TMP_FOLDER_SETUP}/*/nextage_description/ ${TMP_FOLDER_SETUP}/opt/jsk/${HRPSYS_VER}/etc/NEXTAGE
 # VRML model file of Hiro is not opensourced yet. It should be found in /opt/jsk/etc/HIRONX in each robot.
 # Detect if the target robot is Hiro or NX.
 # If Hiro, fetch tarball of /opt/hiro to the ${TMP_FOLDER_SETUP}/hiro_wrl.tgz on the local machine, then extract the content.
@@ -71,8 +71,8 @@ else
   echo 'Nothing done for NXO here.';
 fi
 # Folder names from nextage_description and the one used internal to QNX is different. See https://github.com/start-jsk/rtmros_hironx/issues/160#issuecomment-48572336
-mv ${TMP_FOLDER_SETUP}/opt/jsk/${HRPSYS_VER}/etc/NEXTAGE/models ${TMP_FOLDER_SETUP}/opt/jsk/${HRPSYS_VER}/etc/NEXTAGE/model
-echo "Creating ${TMP_FOLDER_SETUP}/${TARBALL_MODELS}"; tar -C ${TMP_FOLDER_SETUP}/opt/jsk -cvzf ${TARBALL_MODELS} ${HRPSYS_VER}
+###mv ${TMP_FOLDER_SETUP}/opt/jsk/${HRPSYS_VER}/etc/NEXTAGE/models ${TMP_FOLDER_SETUP}/opt/jsk/${HRPSYS_VER}/etc/NEXTAGE/model
+###echo "Creating ${TMP_FOLDER_SETUP}/${TARBALL_MODELS}"; tar -C ${TMP_FOLDER_SETUP}/opt/jsk -cvzf ${TARBALL_MODELS} ${HRPSYS_VER}
 
 # Get the version of hrpsys that is working inside of QNX.
 scp $USERNAME_QNX@$HOSTNAME_QNX:/opt/jsk/lib/RobotHardware.so ${TMP_FOLDER_SETUP}
