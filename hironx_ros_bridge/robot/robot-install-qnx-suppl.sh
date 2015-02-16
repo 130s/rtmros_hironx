@@ -65,7 +65,7 @@ commands="
   mv /home/$USERNAME_QNX/$INSTALLER_NAME .;
   echo \"* Run the installer $INSTALLER_NAME \"; ./$INSTALLER_NAME;
   echo \"* Now extracted files are:\" && ls;
-  echo \"* Extracted files under $HOSTNAME_QNX:$TMP_FOLDER/opt/jsk: \" && ls ./opt/jsk;
+  echo \"* Extracted files under $HOSTNAME_QNX:$TMP_FOLDER/opt/jsk: \";
 
   echo \"* Move files into /opt/jsk/$HRPSYS_VER. \";
   [ -d /opt/jsk/$HRPSYS_VER ] || { echo '** Directory /opt/jsk/$HRPSYS_VER does not exist. Make sure the script robot-compile-setup.sh finished without issues. Abort.'; exit 1; };
