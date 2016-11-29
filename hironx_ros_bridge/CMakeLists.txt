@@ -1,8 +1,17 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(hironx_ros_bridge)
 
-find_package(catkin REQUIRED COMPONENTS hrpsys_ros_bridge pr2_controllers_msgs roslib roslint rostest)
+find_package(catkin REQUIRED COMPONENTS actionlib actionlib_msgs hrpsys_ros_bridge pr2_controllers_msgs roslib roslint rostest std_msgs)
 find_package(Boost REQUIRED COMPONENTS system)
+
+catkin_python_setup()
+
+add_action_files(
+  DIRECTORY action
+  FILES GoInitial.action
+)
+
+generate_messages(DEPENDENCIES actionlib_msgs std_msgs)
 
 catkin_package(
     CATKIN_DEPENDS std_msgs
@@ -10,8 +19,6 @@ catkin_package(
     INCLUDE_DIRS include
     LIBRARIES ros_client_cpp
 )
-
-catkin_python_setup()
 
 add_custom_command(OUTPUT ${PROJECT_SOURCE_DIR}/models/kawada-hironx.dae
   COMMAND ${catkin_EXTRAS_DIR}/test/download_checkmd5.py
@@ -109,5 +116,5 @@ if (CATKIN_ENABLE_TESTING)
   catkin_add_nosetests(test/test_no_ros.py)
 endif()
 
-roslint_python(scripts/hironx.py src/hironx_ros_bridge/hironx_client.py src/hironx_ros_bridge/ros_client.py src/hironx_ros_bridge/constant.py)
+roslint_python(scripts/hironx.py src/hironx_ros_bridge/hironx_client.py src/hironx_ros_bridge/rmi.py src/hironx_ros_bridge/ros_client.py src/hironx_ros_bridge/constant.py)
 roslint_cpp()
