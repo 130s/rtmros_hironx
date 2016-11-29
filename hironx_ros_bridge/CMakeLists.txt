@@ -106,14 +106,15 @@ install(TARGETS acceptancetest_hironx_cpp ros_client_cpp
         LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
         RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION})
 
-add_rostest(test/test-hironx.test)
-add_rostest(test/test-hironx-ros-bridge.test)
-add_rostest(test/test-hironx-ros-bridge-send.test)
-add_rostest(test/test-hironx-ros-bridge-pose.test)
-add_rostest(test/test-hironx-ros-bridge-controller.test)
+#add_rostest(test/test-hironx.test)
+#add_rostest(test/test-hironx-ros-bridge.test)
+#add_rostest(test/test-hironx-ros-bridge-send.test)
+#add_rostest(test/test-hironx-ros-bridge-pose.test)
+#add_rostest(test/test-hironx-ros-bridge-controller.test)
 
 if (CATKIN_ENABLE_TESTING)
-  catkin_add_nosetests(test/test_no_ros.py)
+  #catkin_add_nosetests(test/test_no_ros.py)
+  add_rostest(test/test-hironx-ros-bridge-rmi.test)
 endif()
 
 roslint_python(scripts/hironx.py src/hironx_ros_bridge/hironx_client.py src/hironx_ros_bridge/rmi.py src/hironx_ros_bridge/ros_client.py src/hironx_ros_bridge/constant.py)
