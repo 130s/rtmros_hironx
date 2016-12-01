@@ -40,6 +40,8 @@ import time
 import actionlib
 from hironx_ros_bridge.hironx_client import HIRONX
 import hironx_ros_bridge.msg as hironxoaction
+from hrpsys import rtm
+import rospy
 
 
 class HironxRMI(object):
@@ -47,13 +49,21 @@ class HironxRMI(object):
     RMI (Remote Method Invocation) for methods in HIRONX class.
     '''
 
-    def __init__(self, args):
+    def __init__(self, host='', port=15005, robot="RobotHardware0", modelfile=''):
         '''
         @param args: TODO
         '''
+        rospy.init_node('hironx_rmi')
         self.robot = HIRONX()
-        # TODO Fill in arguments for initialization
-        self.robot.init(robotname=args.robot, url=args.modelfile)
+        if host:
+            rtm.nshost = host if host else 'localhost'
+        if port:
+            rtm.nsport = port
+        if not robot:
+            robot = "RobotHardware0" if host else "HiroNX(Robot)0"
+        if not modelfile:
+            modelfile = "/opt/jsk/etc/HIRONX/model/main.wrl" if host else ""
+        self.robot.init(robotname=robot, url=modelfile)
 
         # Initialize action clients
         self._aclient_goInitial = actionlib.SimpleActionServer(
@@ -63,5 +73,5 @@ class HironxRMI(object):
             auto_start=False)
         self._aclient_goInitial.start()
 
-    def _cb_goInitial(self, tm=7, wait=True, init_pose_type=0):
-        self.robot.goInitial(self, tm, wait, init_pose_type)
+    def _cb_goInitial(self, goal):
+        self.robot.goInitial(goal.time_to_complete, goal.wait, goal.init_pose_type)

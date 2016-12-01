@@ -10,13 +10,13 @@ from test_hironx_ros_bridge import *
 class TestHiroROSBridgeRMI(TestHiroROSBridge):
 
     @classmethod
-    def setUpClass(self):
+    def setUpClass(cls):
         '''
         Overriding because we need to instantiate
         hironx_ros_bridge.rmi.HironxRMI class.
         '''
         # Start an action server that handles various ROS Actions.
-        self.action_server = HironxRMI()
+        cls.action_server = HironxRMI()
 
     def tearDown(self):
         True  # TODO Run practical teardown.
@@ -24,7 +24,7 @@ class TestHiroROSBridgeRMI(TestHiroROSBridge):
     def test_rmi_goInitial(self):
         aclient = actionlib.SimpleActionClient('goInitial', hironxoaction.GoInitialAction)
         aclient.wait_for_server()
-        goal = hironxoaction.GoInitialAction(tm=7)
+        goal = hironxoaction.GoInitialGoal(tm=7)
         aclient.send_goal(goal)
         aclient.wait_for_result()
         self.assertTrue(aclient.get_result())  # A GoInitialResult
