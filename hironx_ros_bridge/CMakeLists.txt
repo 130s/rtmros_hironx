@@ -117,5 +117,5 @@ if (CATKIN_ENABLE_TESTING)
   add_rostest(test/test-hironx-ros-bridge-rmi.test)
 endif()
 
-roslint_python(scripts/hironx.py src/hironx_ros_bridge/hironx_client.py src/hironx_ros_bridge/rmi.py src/hironx_ros_bridge/ros_client.py src/hironx_ros_bridge/constant.py)
+roslint_python(scripts/hironx.py scripts/sample_rmi_script.py src/hironx_ros_bridge/hironx_client.py src/hironx_ros_bridge/rmi.py src/hironx_ros_bridge/ros_client.py src/hironx_ros_bridge/constant.py src/hironx_ros_bridge/sample_rmi.py)
 roslint_cpp()

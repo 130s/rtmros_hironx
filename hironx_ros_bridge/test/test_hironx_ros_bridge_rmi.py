@@ -4,6 +4,7 @@
 import actionlib
 import hironx_ros_bridge.msg as hironxoaction
 from hironx_ros_bridge.rmi import HironxRMI
+from hironx_ros_bridge.sample_rmi import SampleHironxRMI
 from test_hironx_ros_bridge import *
 
 
@@ -12,11 +13,11 @@ class TestHiroROSBridgeRMI(TestHiroROSBridge):
     @classmethod
     def setUpClass(cls):
         '''
-        Overriding because we need to instantiate
+        Overriding because we need to instantiate ROS action server using
         hironx_ros_bridge.rmi.HironxRMI class.
         '''
         # Start an action server that handles various ROS Actions.
-        cls.action_server = HironxRMI()
+        cls.rmi_sampleclass = SampleHironxRMI(robot="HiroNX(Robot)0")
 
     def tearDown(self):
         True  # TODO Run practical teardown.

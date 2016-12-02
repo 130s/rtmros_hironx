@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # Software License Agreement (BSD License)
@@ -32,50 +33,47 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+import argparse
+
 import actionlib
-from hironx_ros_bridge.hironx_client import HIRONX
 import hironx_ros_bridge.msg as hironxoaction
+from hironx_ros_bridge.rmi import HironxRMI
 from hrpsys import rtm
-import rospy
 
 
-class HironxRMI(object):
+class SampleHironxRMI(object):
     '''
-    RMI (Remote Method Invocation) for methods in HIRONX class.
+    RMI sample methods for Hironx. Intended to be called from main method
+    within this same python file.
     '''
 
     def __init__(self, host='', port=15005, robot="RobotHardware0", modelfile=''):
         '''
-        @param args: TODO
+        Overriding because we need to instantiate
+        hironx_ros_bridge.rmi.HironxRMI class.
         '''
-        rospy.init_node('hironx_rmi')
-        self.robot = HIRONX()
-        if host:
-            rtm.nshost = host if host else 'localhost'
-        if port:
-            rtm.nsport = port
-        if not robot:
-            robot = "RobotHardware0" if host else "HiroNX(Robot)0"
-        if not modelfile:
-            modelfile = "/opt/jsk/etc/HIRONX/model/main.wrl" if host else ""
-        self.robot.init(robotname=robot, url=modelfile)
+        # Start an action server that handles various ROS Actions.
+        self._action_server = HironxRMI(host, port, robot, modelfile)
 
-        # Initialize action clients
-        self._aclient_goInitial = actionlib.SimpleActionServer(
-            'goInitial',
-            hironxoaction.GoInitialAction,
-            execute_cb=self._cb_goInitial,
-            auto_start=False)
-        self._aclient_goInitial.start()
+    def sample_goInitial(self):
+        aclient = actionlib.SimpleActionClient('goInitial', hironxoaction.GoInitialAction)
+        aclient.wait_for_server()
+        goal = hironxoaction.GoInitialGoal(tm=7)
+        aclient.send_goal(goal)
+        aclient.wait_for_result()
 
-    def _cb_goInitial(self, goal):
-        _result   = hironxoaction.GoInitialResult()
-        # check that preempt has not been requested by the client
-        if self._aclient_goInitial.is_preempt_requested():
-            rospy.loginfo('%s: Preempted' % self._action_name)
-            self._aclient_goInitial.set_preempted()
-        _res_from_remote = self.robot.goInitial(goal.tm, goal.wait, goal.init_pose_type)
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='hiro command line interpreters')
+    parser.add_argument('--host', help='corba name server hostname')
+    parser.add_argument('--port', help='corba name server port number')
+    parser.add_argument('--modelfile', help='robot model file nmae')
+    parser.add_argument('--robot', help='robot modlule name (RobotHardware0 for real robot, Robot()')
+    args, unknown = parser.parse_known_args()
+    unknown = [u for u in unknown if u[:2] != '__'] # filter out ros arguments
 
-        if _res_from_remote:
-            _result.res = _res_from_remote
-            self._aclient_goInitial.set_succeeded(_result)
+    if not args.robot:
+        args.robot = "RobotHardware0" if args.host else "HiroNX(Robot)0"
+    if not args.modelfile:
+        args.modelfile = "/opt/jsk/etc/HIRONX/model/main.wrl" if args.host else ""
+
+    sample_rmi = SampleHironxRMI(args.host, args.port, args.robot, args.modelfile)
