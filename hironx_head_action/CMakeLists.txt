@@ -10,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
    message_filters 
    pr2_controllers_msgs 
    roscpp 
+   rostest
    sensor_msgs 
    trajectory_msgs 
    tf 
