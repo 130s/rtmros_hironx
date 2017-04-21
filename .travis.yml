@@ -13,7 +13,8 @@ env:
 notifications:
   email:
     recipients:
-      - dev@opensource-robotics.tokyo.jp
+      - iiysaito@opensource-robotics.tokyo.jp  # Temp
+#      - dev@opensource-robotics.tokyo.jp
     on_success: always #[always|never|change] # default: change
     on_failure: always #[always|never|change] # default: always
 before_install: # Use this to prepare the system to install prerequisites or dependencies
